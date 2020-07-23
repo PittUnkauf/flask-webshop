@@ -1,44 +1,111 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
 <head>
-<title>Category: {{categoryName}}</title>
-<link rel="stylesheet" href={{ url_for('static', filename='css/home.css') }} />
-<link rel="stylesheet" href={{ url_for('static', filename='css/topStyle.css') }} />
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Welcome!</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+	<link rel="stylesheet" href={{url_for('static', filename='css/image.css')}}>
+	<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 </head>
 <body>
-<div id="title">
-	<a href="/">
-		<img id="logo" src= {{ url_for('static', filename='images/logo.png') }} />
-	</a>
-	<form>
-		<input id="searchBox" type="text" name="searchQuery">
-		<input id="searchButton" type="submit" value="Search">
-	</form>
-
-	{% if not loggedIn %}
-	<div id="signInButton">
-		<a class="link" href="/loginForm">Sign In</a>
-	</div>
-	{% else %}
-	<div class="dropdown">
-		<button class="dropbtn">Hello, <br>{{firstName}}</button>
-		<div class="dropdown-content">
-			<a href="/account/orders">Your orders</a>
-			<a href="/account/profile">Your profile</a>
-			<hr>
-			<a href="/logout">Sign Out</a>
-		</div>
-	</div>
-	{% endif %}
-	<div id="kart">
-		<a class="link" href="/cart">
-			<img src={{url_for('static', filename='images/shoppingCart.png')}} id="cartIcon" />
-			CART {{noOfItems}}
+<nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+	<div class="navbar-brand">
+		<a class="navbar-item" href="/">
+			<span class="icon is-medium">
+				<i class="fas fa-home fas fa-2x"></i>
+			</span>
+		</a>	
+		<a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+			<span aria-hidden="true"></span>
+			<span aria-hidden="true"></span>
+			<span aria-hidden="true"></span>
 		</a>
 	</div>
-</div>
+	<div id="navbarBasicExample" class="navbar-menu">
+		<div class="navbar-start">
+			<div class="navbar-item">
+				<div class="field has-addons">
+					<div class="control">
+						<input class="input" type="text" placeholder="Find a repository">
+					</div>
+					<div class="control">
+						<a class="button is-info">
+						Search
+						</a>
+					</div>
+					</div>
+			</div>
+			{% if not loggedIn %}
+			<a class="navbar-item" href="/loginForm">Sign In</a>
+			{% else %}
+			<div class="navbar-item has-dropdown is-hoverable">
+				<a class="navbar-link">
+				Hello, {{firstName}}
+				</a>
+		
+				<div class="navbar-dropdown">
+				<a class="navbar-item" href="/account/orders">
+					Your orders
+				</a>
+				<a class="navbar-item" href="/account/profile">
+					Your profile
+				</a>
+				<hr class="navbar-divider">
+				<a class="navbar-item" href="/logout">
+					Sign Out
+				</a>
+				</div>
+			</div>
+			{% endif %}
+			<a class="navbar-item" href="/cart">
+				<span class="icon">
+					<i class="fas fa-shopping-cart"></i>
+				</span>
+				<span>CART {{noOfItems}}</span>
+			</a>
+		</div>
+	</div>
+</nav>
 
-<div>
+<section class="section">
+	<div class="container">
+		<h2 class="subtitle">
+			Showing all products of Category {{categoryName}}:
+		</h2>
+		{% for itemData in data %}
+		<table class="table">
+			<tr id="productName">
+				{% for row in itemData %}
+				<td>
+					{{row[1]}}
+				</td>
+				{% endfor %}
+			</tr>
+			<tr id="productImage">
+				{% for row in itemData %}
+				<td>
+					<a href="/productDescription?productId={{row[0]}}">
+						<figure class="image is-200x150">
+							<img src={{ url_for('static', filename='uploads/' + row[3]) }} id="itemImage">
+						</figure>
+					</a>
+				</td>
+				{% endfor %}
+			</tr>
+			<tr id="productPrice">
+				{% for row in itemData %}
+				<td>
+					${{row[2]}}
+				</td>
+				{% endfor %}
+			</tr>
+		</table>
+		{% endfor %}
+	</div>
+</section>
+
+<!-- <div>
 	<h2>Showing all products of Category {{categoryName}}:</h2>
 	{% for itemData in data %}
 	<table>
@@ -67,6 +134,6 @@
 		</tr>
 	</table>
 	{% endfor %}
-</div>
+</div> -->
 </body>
 </html>

@@ -2,8 +2,6 @@ from flask import *
 import sqlite3, hashlib, os
 from werkzeug.utils import secure_filename
 
-#test
-
 app = Flask(__name__)
 app.secret_key = 'random string'
 UPLOAD_FOLDER = 'static/uploads'
@@ -136,6 +134,7 @@ def editProfile():
 def changePassword():
     if 'email' not in session:
         return redirect(url_for('loginForm'))
+    loggedIn, firstName, noOfItems = getLoginDetails()
     if request.method == "POST":
         oldPassword = request.form['oldpassword']
         oldPassword = hashlib.md5(oldPassword.encode()).hexdigest()
@@ -153,13 +152,13 @@ def changePassword():
                 except:
                     conn.rollback()
                     msg = "Failed"
-                return render_template("changePassword.html", msg=msg)
+                return render_template("changePassword.html", loggedIn=loggedIn, firstName=firstName, noOfItems=noOfItems, msg=msg)
             else:
                 msg = "Wrong password"
         conn.close()
-        return render_template("changePassword.html", msg=msg)
+        return render_template("changePassword.html", loggedIn=loggedIn, firstName=firstName, noOfItems=noOfItems, msg=msg)
     else:
-        return render_template("changePassword.html")
+        return render_template("changePassword.html", loggedIn=loggedIn, firstName=firstName, noOfItems=noOfItems)
 
 @app.route("/updateProfile", methods=["GET", "POST"])
 def updateProfile():
@@ -180,10 +179,10 @@ def updateProfile():
                     cur.execute('UPDATE users SET firstName = ?, lastName = ?, address1 = ?, address2 = ?, zipcode = ?, city = ?, state = ?, country = ?, phone = ? WHERE email = ?', (firstName, lastName, address1, address2, zipcode, city, state, country, phone, email))
 
                     con.commit()
-                    msg = "Saved Successfully"
+                    flash('Saved Successfully')
                 except:
                     con.rollback()
-                    msg = "Error occured"
+                    flash("Error occured")
         con.close()
         return redirect(url_for('editProfile'))
 
@@ -309,9 +308,7 @@ def payment():
         print(row)
         cur.execute("INSERT INTO Orders (userId, productId) VALUES (?, ?)", (userId, row[0]))
     cur.execute("DELETE FROM kart WHERE userId = " + str(userId))
-    conn.commit()
-
-        
+    conn.commit()  
 
     return render_template("checkout.html", products = products, totalPrice=totalPrice, loggedIn=loggedIn, firstName=firstName, noOfItems=noOfItems)
 

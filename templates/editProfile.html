@@ -1,44 +1,196 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
 <head>
-<title>Edit Profile </title>
-<link rel="stylesheet" href={{ url_for('static', filename='css/editProfile.css') }} />
-<link rel="stylesheet" href={{ url_for('static', filename='css/topStyle.css') }} />
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Welcome!</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+	<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 </head>
 <body>
-<div id="title">
-	<a href="/">
-		<img id="logo" src= {{ url_for('static', filename='images/logo.png') }} />
-	</a>
-	<form>
-		<input id="searchBox" type="text" name="searchQuery">
-		<input id="searchButton" type="submit" value="Search">
-	</form>
+<nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+            <span class="icon is-medium">
+                <i class="fas fa-home fas fa-2x"></i>
+            </span>
+        </a>	
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+            <div class="navbar-item">
+                <div class="field has-addons">
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Find a repository">
+                    </div>
+                    <div class="control">
+                        <a class="button is-info">
+                        Search
+                        </a>
+                    </div>
+                    </div>
+            </div>
+            {% if not loggedIn %}
+            <a class="navbar-item" href="/loginForm">Sign In</a>
+            {% else %}
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                Hello, {{firstName}}
+                </a>
+        
+                <div class="navbar-dropdown">
+                <a class="navbar-item" href="/account/orders">
+                    Your orders
+                </a>
+                <a class="navbar-item" href="/account/profile">
+                    Your profile
+                </a>
+                <hr class="navbar-divider">
+                <a class="navbar-item" href="/logout">
+                    Sign Out
+                </a>
+                </div>
+            </div>
+            {% endif %}
+            <a class="navbar-item" href="/cart">
+                <span class="icon">
+                    <i class="fas fa-shopping-cart"></i>
+                </span>
+                <span>CART {{noOfItems}}</span>
+            </a>
+        </div>
+    </div>
+</nav>
 
-	{% if not loggedIn %}
-	<div id="signInButton">
-		<a class="link" href="/loginForm">Sign In</a>
-	</div>
-	{% else %}
-	<div class="dropdown">
-		<button class="dropbtn">Hello, <br>{{firstName}}</button>
-		<div class="dropdown-content">
-			<a href="/account/orders">Your orders</a>
-			<a href="/account/profile">Your profile</a>
-			<hr>
-			<a href="/logout">Sign Out</a>
-		</div>
-	</div>
-	{% endif %}
-	<div id="kart">
-		<a class="link" href="/cart">
-			<img src={{url_for('static', filename='images/shoppingCart.png')}} id="cartIcon" />
-			CART {{noOfItems}}
-		</a>
-	</div>
-</div>
+<section class="section">
+    <div class="container">
+        <h2 class="subtitle">
+            Edit Profile: 
+        </h2>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
+        <form action="/updateProfile" method="POST">
+            <div class="field is-horizontal">
+                <div class="field-body">
+                    <div class="field">
+                        <label class="label">Email</label>
+                        <p class="control is-expanded has-icons-left">
+                          <input class="input" type="email" name="email" value={{profileData[1]}} readonly="readonly">
+                          <span class="icon is-small is-left">
+                            <i class="fas fa-envelope"></i>
+                          </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-<div class="display">
+            <div class="field is-horizontal">
+                <div class="field-body">
+                    <div class="field">
+                        <label class="label">First Name</label>
+                        <p class="control is-expanded">
+                            <input class="input" type="text" name="firstName" value={{profileData[2]}}>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <label class="label">Last Name</label>
+                        <p class="control is-expanded">
+                            <input class="input" type="text" name="lastName" value={{profileData[3]}}>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field is-horizontal">
+                <div class="field-body">
+                    <div class="field">
+                        <label class="label">Address Line 1</label>
+                        <p class="control is-expanded">
+                            <input class="input" type="text" name="address1" value={{profileData[4]}}>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <label class="label">Address Line 2</label>
+                        <p class="control is-expanded">
+                            <input class="input" type="text" name="address2" value={{profileData[5]}}>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field is-horizontal">
+                <div class="field-body">
+                    <div class="field">
+                        <label class="label">Zipcode</label>
+                        <p class="control is-expanded">
+                            <input class="input" type="text" name="zipcode" value={{profileData[6]}}>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <label class="label">City</label>
+                        <p class="control is-expanded">
+                            <input class="input" type="text" name="city" value={{profileData[7]}}>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <label class="label">State</label>
+                        <p class="control is-expanded">
+                            <input class="input" type="text" name="state" value={{profileData[8]}}>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <label class="label">Country</label>
+                        <p class="control is-expanded">
+                            <input class="input" type="text" name="country" value={{profileData[9]}}>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field is-horizontal">
+                <div class="field-body">
+                    <div class="field">
+                        <label class="label">Phone Number</label>
+                        <div class="field has-addons">
+                            <p class="control">
+                                <a class="button is-static">
+                                    +49
+                                </a>
+                            </p>
+                            <p class="control is-expanded">
+                                <input class="input" type="tel" name="phone" value={{profileData[10]}}>
+                            </p>
+                        </div>
+                        <p class="help">Do not enter the first zero</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <p class="control">
+                    <button class="button is-primary">
+                    Save
+                    </button>
+                </p>
+            </div>
+            <a href="{{ url_for('profileHome') }}">Go back to Profile</a>
+        </form>
+    </div>
+</section>
+
+<!-- <div class="display">
 	<h2>Edit profile</h2>
 	<form action="/updateProfile" method="POST">
 		<p>Email:<input type="email" name="email" value={{profileData[1]}} readonly="readonly"></p>
@@ -53,7 +205,7 @@
 		<p>Phone Number: <input type="text" name="phone" value={{profileData[10]}}></p>
 		<input type="submit" value="Save">
 	</form>
-</div>
+</div> -->
 </body>
 </html>
 

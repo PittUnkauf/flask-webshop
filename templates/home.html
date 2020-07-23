@@ -1,55 +1,90 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
 <head>
-<title>Welcome</title>
-<link rel="stylesheet" href={{ url_for('static', filename='css/home.css') }} />
-<link rel="stylesheet" href={{ url_for('static', filename='css/topStyle.css') }} />
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Welcome!</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+	<link rel="stylesheet" href={{url_for('static', filename='css/image.css')}}>
+	<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 </head>
 <body>
-<div id="title">
-	<a href="/">
-		<img id="logo" src= {{ url_for('static', filename='images/logo.png') }} />
-	</a>
-	<form>
-		<input id="searchBox" type="text" name="searchQuery">
-		<input id="searchButton" type="submit" value="Search">
-	</form>
-
-	{% if not loggedIn %}
-	<div id="signInButton">
-		<a class="link" href="/loginForm">Sign In</a>
-	</div>
-	{% else %}
-	<div class="dropdown">
-		<button class="dropbtn">Hello, <br>{{firstName}}</button>
-		<div class="dropdown-content">
-			<a href="/account/orders">Your orders</a>
-			<a href="/account/profile">Your profile</a>
-			<hr>
-			<a href="/logout">Sign Out</a>
-		</div>
-	</div>
-	{% endif %}
-	<div id="kart">
-		<a class="link" href="/cart">
-			<img src={{url_for('static', filename='images/shoppingCart.png')}} id="cartIcon" />
-			CART {{noOfItems}}
+<nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+	<div class="navbar-brand">
+		<a class="navbar-item" href="/">
+			<span class="icon is-medium">
+				<i class="fas fa-home fas fa-2x"></i>
+			</span>
+		</a>	
+		<a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+			<span aria-hidden="true"></span>
+			<span aria-hidden="true"></span>
+			<span aria-hidden="true"></span>
 		</a>
 	</div>
-</div>
-<div class="display">
-	<div class="displayCategory">
-		<h2>Shop by Category: </h2>
+	<div id="navbarBasicExample" class="navbar-menu">
+		<div class="navbar-start">
+			<div class="navbar-item">
+				<form action="search" method="GET">
+					<div class="field has-addons">
+						<div class="control">
+						  <input class="input" type="text" name="query" id="query" placeholder="Find a book">
+						</div>
+						<div class="control">
+						  <a class="button is-info">
+							Search
+						  </a>
+						</div>
+					</div>
+				</form>
+			</div>
+			{% if not loggedIn %}
+			<a class="navbar-item" href="/loginForm">Sign In</a>
+			{% else %}
+			<div class="navbar-item has-dropdown is-hoverable">
+				<a class="navbar-link">
+				Hello, {{firstName}}
+				</a>
+		
+				<div class="navbar-dropdown">
+				<a class="navbar-item" href="/account/orders">
+					Your orders
+				</a>
+				<a class="navbar-item" href="/account/profile">
+					Your profile
+				</a>
+				<hr class="navbar-divider">
+				<a class="navbar-item" href="/logout">
+					Sign Out
+				</a>
+				</div>
+			</div>
+			{% endif %}
+			<a class="navbar-item" href="/cart">
+				<span class="icon">
+					<i class="fas fa-shopping-cart"></i>
+				</span>
+				<span>CART {{noOfItems}}</span>
+			</a>
+		</div>
+	</div>
+</nav>
+<section class="section">
+	<div class="container">
+		<h2 class="subtitle">
+		Shop by Category: 
+		</h2>
 		<ul>
 			{% for row in categoryData %}
 			<li><a href="/displayCategory?categoryId={{row[0]}}">{{row[1]}}</a></li>
 			{% endfor %}
 		</ul>
-	</div>
-	<div>
-		<h2>Items</h2>
+		<br>
+		<h2 class="subtitle">
+			Items:
+		</h2>
 		{% for data in itemData%}
-		<table>
+		<table class="table">
 			<tr id="productName">
 				{% for row in data %}
 				<td>
@@ -61,7 +96,9 @@
 				{% for row in data %}
 				<td>
 					<a href="/productDescription?productId={{row[0]}}">
-						<img src={{ url_for('static', filename='uploads/' + row[4]) }} id="itemImage" />
+						<figure class="image is-200x150">
+							<img src={{ url_for('static', filename='uploads/' + row[4]) }} id="itemImage">
+						</figure>
 					</a>
 				</td>
 				{% endfor %}
@@ -76,7 +113,6 @@
 		</table>
 		{% endfor %}
 	</div>
-</div>
+</section>
 </body>
 </html>
-

@@ -1,33 +1,188 @@
+<!DOCTYPE html>
 <html>
 <head>
-<title>Registration</title>
-<script type="text/javascript" src="{{ url_for('static', filename = 'js/validateForm.js') }}">
-</script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Welcome!</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 </head>
 <body>
-<form action="/register" method="POST" onsubmit="return validate()">
-    <p>Email: <input type="email" name="email"></p>
 
-    <P>Password: <input type="password" name="password" id="password" required></p>
+<section class="section">
+    <div class="container">
+        <form action="/register" method="POST" onsubmit="return validate()">
+            <div class="field is-horizontal">
+                <div class="field-body">
+                    <div class="field">
+                        <label class="label">Email</label>
+                        <p class="control is-expanded has-icons-left">
+                          <input class="input" type="email" name="email" placeholder="Email">
+                          <span class="icon is-small is-left">
+                            <i class="fas fa-envelope"></i>
+                          </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-    <p>Confirm Password: <input type="password" name="cpassword" id="cpassword"></p>
+            <div class="field is-horizontal">
+                <div class="field-body">
+                    <div class="field">
+                        <label class="label">Password</label>
+                        <p class="control is-expanded has-icons-left">
+                            <input class="input" type="password" name="password" id="password" required>
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-key"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <label class="label">Confirm Password</label>
+                        <p class="control is-expanded has-icons-left">
+                            <input class="input" type="password" name="cpassword" id="cpassword">
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-    <p>First Name: <input type="text" name="firstName"></p>
-    <p>Last Name: <input type="text" name="lastName"></p>
-    <p>Address Line 1: <input type="text" name="address1"></p>
-    <p>Address Line 2: <input type="text" name="address2"></p>
-    <p>Zipcode: <input type="text" name="zipcode"></p>
-    <p>City: <input type="text" name="city"></p>
-    <p>State: <input type="text" name="state"></p>
-    <p>Country: <input type="text" name="country"></p>
-    <p>Phone Number: <input type="text" name="phone"></p>
+            <div class="field is-horizontal">
+                <div class="field-body">
+                    <div class="field">
+                        <label class="label">First Name</label>
+                        <p class="control is-expanded">
+                            <input class="input" type="text" name="firstName" required>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <label class="label">Last Name</label>
+                        <p class="control is-expanded">
+                            <input class="input" type="text" name="lastName" required>
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-    <p><input type="submit" value="Register"></p>
+            <div class="field is-horizontal">
+                <div class="field-body">
+                    <div class="field">
+                        <label class="label">Address Line 1</label>
+                        <p class="control is-expanded">
+                            <input class="input" type="text" name="address1" required>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <label class="label">Address Line 2</label>
+                        <p class="control is-expanded">
+                            <input class="input" type="text" name="address2">
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-    <a href="/loginForm">Login here</a>
-</form>
+            <div class="field is-horizontal">
+                <div class="field-body">
+                    <div class="field">
+                        <label class="label">Zipcode</label>
+                        <p class="control is-expanded">
+                            <input class="input" type="text" name="zipcode" required>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <label class="label">City</label>
+                        <p class="control is-expanded">
+                            <input class="input" type="text" name="city">
+                        </p>
+                    </div>
+                    <div class="field">
+                        <label class="label">State</label>
+                        <p class="control is-expanded">
+                            <input class="input" type="text" name="state">
+                        </p>
+                    </div>
+                    <div class="field">
+                        <label class="label">Country</label>
+                        <p class="control is-expanded">
+                            <input class="input" type="text" name="country">
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field is-horizontal">
+                <div class="field-body">
+                    <div class="field">
+                        <label class="label">Phone Number</label>
+                        <div class="field has-addons">
+                            <p class="control">
+                                <a class="button is-static">
+                                    +49
+                                </a>
+                            </p>
+                            <p class="control is-expanded">
+                                <input class="input" type="tel" name="phone" placeholder="Your phone number">
+                            </p>
+                        </div>
+                        <p class="help">Do not enter the first zero</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <p class="control">
+                    <button class="button is-primary">
+                    Register
+                    </button>
+                </p>
+            </div>
+            <a href="/loginForm">Login here</a>
+
+        </form>
+    </div>
+</section>
 </body>
 </html>
+
+<!-- <label for="email">E-Mail</label>
+<input type="email" name="email">
+
+<label for="password">Password</label>
+<input type="password" name="password" id="password" required>
+
+<label for="cpassword">Confirm Password</label>
+<input type="password" name="cpassword" id="cpassword">
+
+<label for="firstName">First Name</label>
+<input type="text" name="firstName">
+
+<label for="lastName">Last Name</label>
+<input type="text" name="lastName">
+
+<label for="address1">Adress Line 1</label>
+<input type="text" name="address1">
+
+<label for="address2"> Adress Line 2</label>
+<input type="text" name="address2">
+
+<label for="zipcode">Zipcode</label>
+<input type="text" name="zipcode">
+
+<label for="city">City</label>
+<input type="text" name="city">
+
+<label for="state">State</label>
+<input type="text" name="state">
+
+<label for="country">Country</label>
+<input type="text" name="country">
+
+<label for="phone">Phone Number</label>
+<input type="text" name="phone">
+
+<p><input class="button-primary" type="submit" value="Register"></p> -->
 
 
 
